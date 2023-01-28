@@ -1,14 +1,19 @@
 import { Google } from "@mui/icons-material";
-import { Button, Grid, Link, TextField, Typography } from "@mui/material";
+import {
+	Alert,
+	Button,
+	Grid,
+	Link,
+	TextField,
+	Typography,
+} from "@mui/material";
 import { Link as LinkRouter } from "react-router-dom";
-import { useState } from "react";
 import { AuthLayout } from "../layout/AuthLayout";
 import { useDispatch, useSelector } from "react-redux";
-import { login, checkingCredentials } from "../../store/auth/authSlice";
 import { useForm } from "../../hooks/useForm";
 import {
-	checkingAuthentication,
 	startGoogleSignin,
+	startSigninWithEmailAndPassword,
 } from "../../store/auth/thunks";
 
 export const LoginPage = () => {
@@ -21,7 +26,7 @@ export const LoginPage = () => {
 
 	const onSubmit = (event) => {
 		event.preventDefault();
-		dispatch(checkingAuthentication(email, password));
+		dispatch(startSigninWithEmailAndPassword(email, password));
 	};
 
 	const onGooglSignIn = (event) => {
@@ -53,6 +58,14 @@ export const LoginPage = () => {
 							fullWidth
 							onChange={onInputChange}
 						/>
+					</Grid>
+					<Grid
+						item
+						xs={12}
+						sx={{ mb: 2 }}
+						display={!!user.loginErrorMessage ? "" : "none"}
+					>
+						<Alert severity="error">{user.loginErrorMessage}</Alert>
 					</Grid>
 					<Grid container spacing={2} sx={{ mb: 2 }}>
 						<Grid item xs={12} sm={6}>
